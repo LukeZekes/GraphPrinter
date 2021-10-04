@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace GraphPrinter
 {
@@ -111,7 +112,7 @@ namespace GraphPrinter
 
             List<Item> sortedItems = new List<Item>(items); //This (hopefully) preserves the original ordering of the items List
             sortedItems.Sort((x, y) => x.Name.Length.CompareTo(y.Name.Length)); //Sorts items in order of increasing name length
-            string longestName = items[^1].Name; //Gets longest name 
+            string longestName = sortedItems[^1].Name; //Gets longest name 
             int colWidth = longestName.Length + 2;
 
             sortedItems.Sort((x, y) => x.Value.CompareTo(y.Value)); //Sorts items in increasing order of value
@@ -223,6 +224,8 @@ namespace GraphPrinter
                         }
                     }
                     Console.Write("#"); //TODO: Add ability to change character used for graphing
+                    Thread.Sleep(50);
+
                 }
                 Console.Write("  " + item.Value);
                 Console.WriteLine();
