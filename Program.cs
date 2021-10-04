@@ -6,7 +6,7 @@ namespace GraphPrinter
     {
         static void Main(string[] args)
         {
-            
+            //Demo program
             HorizontalBarGraph barGraph = new HorizontalBarGraph();
             barGraph.AddMarker(0, ConsoleColor.Green);
             barGraph.AddMarker(10, ConsoleColor.Yellow);
@@ -21,6 +21,10 @@ namespace GraphPrinter
             barGraph.baseColor = ConsoleColor.White;
             barGraph.label = "Test Graph";
             Console.WriteLine(barGraph.OutputItems());
+            barGraph.PrintGraph();
+            Console.WriteLine();
+            Console.WriteLine();
+            barGraph.sortMode = HorizontalBarGraph.SortMode.Decreasing;
             barGraph.PrintGraph();
             
         }

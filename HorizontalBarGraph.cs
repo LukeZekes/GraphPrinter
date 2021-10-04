@@ -5,12 +5,18 @@ namespace GraphPrinter
 {
     class HorizontalBarGraph
     {
+        public enum SortMode
+        {
+            Increasing = 0,
+            Decreasing = 1
+        }
         readonly List<Item> items; //List of all items included in the graph
         readonly List<Marker> markers; //List of all markers in the graph (allows the graph to be colored per range of values)
         //The scale of the horizontal axis e.g. a scale of 1 means each character is equal to 1 unit, a scale of 10 means each character represents 10 units
         public double scale = 1;
         public ConsoleColor baseColor = ConsoleColor.White;
         public string label = "";
+        public SortMode sortMode = SortMode.Increasing;
         #region Constructors
         public HorizontalBarGraph()
         {
@@ -103,24 +109,27 @@ namespace GraphPrinter
 
             markers.Sort((x, y) => x.MarkerValue.CompareTo(y.MarkerValue));
 
-            List<Item> sortedItems = items; //This (hopefully) preserves the original ordering of the items List
+            List<Item> sortedItems = new List<Item>(items); //This (hopefully) preserves the original ordering of the items List
             sortedItems.Sort((x, y) => x.Name.Length.CompareTo(y.Name.Length)); //Sorts items in order of increasing name length
             string longestName = items[^1].Name; //Gets longest name 
             int colWidth = longestName.Length + 2;
 
-            sortedItems.Sort((x, y) => x.Value.CompareTo(y.Value)); //Sorts items in increasing order of risk score
-        //  if (sortMode == SortMode.Decreasing)
-            //  items.Reverse(); //Sorts items in decreasing order instead
-
-            Console.ForegroundColor = baseColor;
+            sortedItems.Sort((x, y) => x.Value.CompareTo(y.Value)); //Sorts items in increasing order of value
+            int width = (int)(GetInterval(sortedItems[^1].Value) / scale) + colWidth; //Width of the graph, including left margin
+            if (sortMode == SortMode.Decreasing)
+            {
+                sortedItems.Reverse(); //Sorts items in decreasing order instead
+                width = (int)(GetInterval(sortedItems[0].Value) / scale) + colWidth;
+            }
+                Console.ForegroundColor = baseColor;
             //Print out label
-            int width = (int)(GetInterval(sortedItems[^1].Value) / scale) + colWidth;
+            
             int margin = (width - label.Length) / 2;
             for (int i = 0; i < margin; i++)
                 Console.Write(" ");
             
             Console.Write(label);
-
+            
             for (int i = 0; i < margin; i++)
                 Console.Write(" ");
             Console.WriteLine();
@@ -130,7 +139,7 @@ namespace GraphPrinter
             {
                 Console.Write("-");
             }
-            for (int i = 0; i < (GetInterval(sortedItems[^1].Value) / scale) + 1; i++)
+            for (int i = 0; i <= width - colWidth; i++)
             {
                 if (i % 10 == 0)
                 {/*
@@ -176,7 +185,7 @@ namespace GraphPrinter
 
             Console.WriteLine();
             //Print out divider
-            for (int i = 0; i < colWidth + (GetInterval(sortedItems[^1].Value) / scale) + 1; i++)
+            for (int i = 0; i <= width; i++)
             {
                 if ((i - colWidth) % 10 == 0 && i >= colWidth)
                 {
@@ -221,7 +230,7 @@ namespace GraphPrinter
             Console.WriteLine();
             //Print out y-axis labels and bars
 
-        foreach (Item item in items)
+        foreach (Item item in sortedItems)
             {
                 int numSpaces = colWidth - item.Name.Length;
                 //Coloring item names based on value
