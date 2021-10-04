@@ -15,7 +15,6 @@ namespace GraphPrinter
 
         public override string ToString()
         {
-            //return $"name: {name} - value: {value}";
             return $"{Name}: {Value}";
         }
     }

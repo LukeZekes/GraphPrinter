@@ -6,7 +6,13 @@ namespace GraphPrinter
     {
         static void Main(string[] args)
         {
+            
             HorizontalBarGraph barGraph = new HorizontalBarGraph();
+            barGraph.AddMarker(0, ConsoleColor.Red);
+            barGraph.AddMarker(1, ConsoleColor.White);
+            barGraph.AddMarker(2, ConsoleColor.Blue);
+            Console.WriteLine(barGraph.OutputMarkers());
+            /*
             barGraph.AddItem("Item 1", 20);
             barGraph.AddItem("Item 2", 2);
             barGraph.AddItem("Item 3", 15);
@@ -16,6 +22,7 @@ namespace GraphPrinter
             barGraph.label = "Test Graph";
             Console.WriteLine(barGraph.OutputItems());
             barGraph.PrintGraph();
+            */
         }
     }
 }

@@ -5,24 +5,29 @@ namespace GraphPrinter
 {
     class HorizontalBarGraph
     {
-        readonly List<Item> items;
+        readonly List<Item> items; //List of all items included in the graph
+        readonly List<Marker> markers; //List of all markers in the graph (allows the graph to be colored per range of values)
         //The scale of the horizontal axis e.g. a scale of 1 means each character is equal to 1 unit, a scale of 10 means each character represents 10 units
         public double scale = 1;
         public ConsoleColor baseColor = ConsoleColor.White;
         public string label = "";
+        #region Constructors
         public HorizontalBarGraph()
         {
             items = new List<Item>();
+            markers = new List<Marker>();
         }
         public HorizontalBarGraph(params Item[] _items)
         {
             items = new List<Item>(_items);
+            markers = new List<Marker>();
         }
         public HorizontalBarGraph(IEnumerable<Item> _items)
         {
             items = new List<Item>(_items);
+            markers = new List<Marker>();
         }
-
+        #endregion
         public Item AddItem(Item item)
         {
             items.Add(item);
@@ -34,12 +39,32 @@ namespace GraphPrinter
             items.Add(item);
             return item;
         }
+        public Marker AddMarker(Marker _marker)
+        {
+            markers.Add(_marker);
+            return _marker;
+        }
+        public Marker AddMarker(double _markerValue, ConsoleColor _markerColor)
+        {
+            Marker m = new Marker(_markerValue, _markerColor);
+            markers.Add(m);
+            return m;
+        }
         public string OutputItems()
         {
             string str = "";
             foreach(Item item in items)
             {
                 str += item + "\n";
+            }
+            return str;
+        }
+        public string OutputMarkers()
+        {
+            string str = "";
+            foreach(Marker marker in markers)
+            {
+                str += marker + "\n";
             }
             return str;
         }
@@ -208,6 +233,9 @@ namespace GraphPrinter
             Console.ResetColor();
 
         }
+
+        
+
 
     }
 }
