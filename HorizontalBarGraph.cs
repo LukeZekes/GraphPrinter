@@ -41,14 +41,30 @@ namespace GraphPrinter
         }
         public Marker AddMarker(Marker _marker)
         {
+            //See if a marker already exists at this same value, and remove it if it does
+            for(int i = 0; i < markers.Count; i++) {
+                Marker m = markers[i];
+                if(m.MarkerValue == _marker.MarkerValue)
+                {
+                    markers.RemoveAt(i);
+                }
+            }
             markers.Add(_marker);
             return _marker;
         }
         public Marker AddMarker(double _markerValue, ConsoleColor _markerColor)
         {
-            Marker m = new Marker(_markerValue, _markerColor);
-            markers.Add(m);
-            return m;
+            Marker _marker = new Marker(_markerValue, _markerColor);
+            for (int i = 0; i < markers.Count; i++)
+            {
+                Marker m = markers[i];
+                if (m.MarkerValue == _marker.MarkerValue)
+                {
+                    markers.RemoveAt(i);
+                }
+            }
+            markers.Add(_marker);
+            return _marker;
         }
         public string OutputItems()
         {
@@ -84,6 +100,8 @@ namespace GraphPrinter
         public void PrintGraph()
         {
             Console.WriteLine(); //To avoid any weird issues that arise when this is not called on a new line
+
+            markers.Sort((x, y) => x.MarkerValue.CompareTo(y.MarkerValue));
 
             List<Item> sortedItems = items; //This (hopefully) preserves the original ordering of the items List
             sortedItems.Sort((x, y) => x.Name.Length.CompareTo(y.Name.Length)); //Sorts items in order of increasing name length
@@ -135,6 +153,16 @@ namespace GraphPrinter
                             break;
                     }
                     */
+                    //Works backwards through markers to find out which marker i falls into and colors foreground appropriately
+                    for(int j = markers.Count - 1; j >= 0; j--)
+                    {
+                        Marker m = markers[j];
+                        if(i * scale >= m.MarkerValue)
+                        {
+                            Console.ForegroundColor = m.MarkerColor;
+                            break;
+                        }
+                    }
                     Console.Write(i * scale);
                     Console.ForegroundColor = baseColor;
                 }
@@ -171,13 +199,23 @@ namespace GraphPrinter
                             Console.ForegroundColor = ConsoleColor.DarkRed;
                             break;
                     }*/
+                    /*for (int j = markers.Count - 1; j >= 0; j--)
+                    {
+                        Marker m = markers[j];
+                        if ((i-colWidth)* scale >= m.MarkerValue)
+                        {
+                            Console.ForegroundColor = m.MarkerColor;
+                            break;
+                        }
+                    }*/
                     Console.Write("|");
-                    Console.ForegroundColor = baseColor;
+                    //Console.ForegroundColor = baseColor;
 
                 }
                 else
                     Console.Write("-");
             }
+            Console.ForegroundColor = baseColor;
 
             //Console.Write("|");
             Console.WriteLine();
@@ -186,21 +224,19 @@ namespace GraphPrinter
         foreach (Item item in items)
             {
                 int numSpaces = colWidth - item.Name.Length;
-                /*  Coloring item names based on value - values for color thresholds not implemented
-                if (item.value < 10)
-                    Console.ForegroundColor = ConsoleColor.Green;
-                else if (item.value < 20)
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                else if (item.value < 30)
-                    Console.ForegroundColor = ConsoleColor.DarkYellow;
-                else if (item.value < 40)
-                    Console.ForegroundColor = ConsoleColor.Red;
-                else
-                    Console.ForegroundColor = ConsoleColor.DarkRed;
-                */
+                //Coloring item names based on value
+                for (int j = markers.Count - 1; j >= 0; j--)
+                {
+                    Marker m = markers[j];
+                    if(item.Value >= m.MarkerValue)
+                    {
+                        Console.ForegroundColor = m.MarkerColor;
+                        break;
+                    }
+                }
                 Console.Write(item.Name);
 
-               // Console.ForegroundColor = ConsoleColor.White;
+                Console.ForegroundColor = baseColor;
                 for (int i = 0; i < numSpaces; i++)
                     Console.Write(" ");
 
@@ -221,7 +257,15 @@ namespace GraphPrinter
                         Console.ForegroundColor = ConsoleColor.DarkRed;
 
                     */
-                    
+                    for (int j = markers.Count - 1; j >= 0; j--)
+                    {
+                        Marker m = markers[j];
+                        if (i >= m.MarkerValue)
+                        {
+                            Console.ForegroundColor = m.MarkerColor;
+                            break;
+                        }
+                    }
                     Console.Write("#"); //TODO: Add ability to change character used for graphing
                 }
 

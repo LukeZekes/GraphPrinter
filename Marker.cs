@@ -5,8 +5,8 @@ namespace GraphPrinter
 {
     class Marker
     {
-        double MarkerValue;
-        ConsoleColor MarkerColor;
+        public double MarkerValue;
+        public ConsoleColor MarkerColor;
 
         public Marker(double _MarkerValue, ConsoleColor _MarkerColor)
         {
