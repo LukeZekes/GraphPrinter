@@ -22,10 +22,6 @@ namespace GraphPrinter
             barGraph.label = "Test Graph";
             Console.WriteLine(barGraph.OutputItems());
             barGraph.PrintGraph();
-            Console.WriteLine();
-            Console.WriteLine();
-            barGraph.sortMode = HorizontalBarGraph.SortMode.Decreasing;
-            barGraph.PrintGraph();
             
         }
     }

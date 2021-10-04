@@ -121,7 +121,7 @@ namespace GraphPrinter
                 sortedItems.Reverse(); //Sorts items in decreasing order instead
                 width = (int)(GetInterval(sortedItems[0].Value) / scale) + colWidth;
             }
-                Console.ForegroundColor = baseColor;
+            Console.ForegroundColor = baseColor;
             //Print out label
             
             int margin = (width - label.Length) / 2;
@@ -142,26 +142,7 @@ namespace GraphPrinter
             for (int i = 0; i <= width - colWidth; i++)
             {
                 if (i % 10 == 0)
-                {/*
-                    switch (i)
-                    {
-                        case 0:
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            break;
-                        case 10:
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            break;
-                        case 20:
-                            Console.ForegroundColor = ConsoleColor.DarkYellow;
-                            break;
-                        case 30:
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            break;
-                        default:
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            break;
-                    }
-                    */
+                {
                     //Works backwards through markers to find out which marker i falls into and colors foreground appropriately
                     for(int j = markers.Count - 1; j >= 0; j--)
                     {
@@ -189,25 +170,6 @@ namespace GraphPrinter
             {
                 if ((i - colWidth) % 10 == 0 && i >= colWidth)
                 {
-                    /* Coloring needs to be redone for this project to allow for greater control
-                    switch (i - colWidth)
-                    {
-                        case 0:
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            break;
-                        case 10:
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            break;
-                        case 20:
-                            Console.ForegroundColor = ConsoleColor.DarkYellow;
-                            break;
-                        case 30:
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            break;
-                        default:
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            break;
-                    }*/
                     /*for (int j = markers.Count - 1; j >= 0; j--)
                     {
                         Marker m = markers[j];
@@ -218,8 +180,6 @@ namespace GraphPrinter
                         }
                     }*/
                     Console.Write("|");
-                    //Console.ForegroundColor = baseColor;
-
                 }
                 else
                     Console.Write("-");
@@ -253,19 +213,6 @@ namespace GraphPrinter
                 //Writing bars
                 for (double i = scale; i <= item.Value; i+=scale)
                 {
-                    /* More coloring, needs to be redone for this project
-                    if (i < 10)
-                        Console.ForegroundColor = ConsoleColor.Green;
-                    else if (i < 20)
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                    else if (i < 30)
-                        Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    else if (i < 40)
-                        Console.ForegroundColor = ConsoleColor.Red;
-                    else
-                        Console.ForegroundColor = ConsoleColor.DarkRed;
-
-                    */
                     for (int j = markers.Count - 1; j >= 0; j--)
                     {
                         Marker m = markers[j];
@@ -277,18 +224,10 @@ namespace GraphPrinter
                     }
                     Console.Write("#"); //TODO: Add ability to change character used for graphing
                 }
-
-
                 Console.Write("  " + item.Value);
                 Console.WriteLine();
             }
-
             Console.ResetColor();
-
         }
-
-        
-
-
     }
 }
